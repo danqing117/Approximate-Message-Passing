@@ -26,24 +26,15 @@ t = 2;
 
 while ((t<I+1))
     
-    tau(t) = sqrt( sigma2 + (1/delta * tau(t-1) * mean( etafunprimereal(A'* z(:,t-1) + x_bar(:,t-1), tau(t-1)) ))^2);
-    %tau(t) = sqrt( sigma2+(tau(t-1) * mean((A.^2) * etafunprimereal(A'* z(:,t-1) + x_bar(:,t-1), tau(t-1))))^2);
-    
+    tau(t) = sqrt( sigma2 + (1/delta * tau(t-1) * mean( etafunprimereal(A'* z(:,t-1) + x_bar(:,t-1), tau(t-1)) ))^2);    
     z(:,t) = y - A * x_bar(:,t) + 1/delta * z(:,t-1) * mean( etafunprimereal(A'* z(:,t-1) + x_bar(:,t-1), tau(t-1)) ) ;
-    %z(:,t) = y - A * x_bar(:,t) +  ((A.^2) * etafunprimereal(A'* z(:,t-1) + x_bar(:,t-1), tau(t-1))).* z(:,t-1); 
     zsquare(t) = norm(z(:,t))^2/n;
     r(t) = norm(y - A*x_bar(:,t))/n;
     
-%     for a = 1:n
-%         z(a,t) = y(a) - A(a,:) * x_bar(:,t) + z(a,t-1) * (A(a,:).^2) * etafunprimereal(A'* z(:,t-1) + x_bar(:,t-1), tau(t-1));
-%     end
-
 
     MAI(:,t) = (A'*A - eye(N)) * (x_bar(:,t) - x);
     x_bar(:,t+1) = etafunreal( A'*z(:,t)+x_bar(:,t), tau(t) );
     truemse(t+1) = sum(abs(x_bar(:,t+1)-x).^2)/N;
-    %truemse(t+1) = norm(x_bar(:,t+1) - x)/norm(x);
-    truemse(t+1);
      
     if (truemse(t+1) <= msetol)
        break;
@@ -63,9 +54,7 @@ while ((t<I+1))
             truemse(t+1) = truemse(a(1));
         end
         break;
-    end
-
-    
+    end   
     t = t+1; 
 end
     
@@ -81,7 +70,7 @@ end
  T = tau';
  H = x_bar;
  Z = zsquare;
-stopnorm = stop(1:t-1).';
+ stopnorm = stop(1:t-1).';
 
 
 
